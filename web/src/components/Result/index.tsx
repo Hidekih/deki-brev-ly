@@ -6,9 +6,9 @@ interface Props extends React.ComponentPropsWithoutRef<"div"> {
   title: string;
 }
 
-export function Result({ image, title, children, ...props }: Props) {
+export function Result({ image, title, children, className = "", ...props }: Props) {
   return (
-    <div className="flex flex-col gap-6 items-center" {...props}>
+    <div className={`flex flex-col gap-6 items-center ${className}`} {...props}>
       {image}
       
       <Title>{title}</Title>
