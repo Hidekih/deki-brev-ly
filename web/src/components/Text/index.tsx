@@ -2,7 +2,7 @@ interface Props extends React.ComponentProps<"p"> {
   size?: "xs" | "sm" | "md" | "lg" | "xl";
 }
 
-export function Text({ children, className, size = "md", ...props }: Props) {
+export function Text({ children, className = "", size = "md", ...props }: Props) {
   const getStyleBySize = (size: Props["size"]) => {
     switch (size) {
       case "xs":
@@ -22,7 +22,7 @@ export function Text({ children, className, size = "md", ...props }: Props) {
 
   return (
     <p
-      className={`${getStyleBySize(size)} text-gray-500 ${className}`}
+      className={`text-gray-500 ${getStyleBySize(size)} ${className}`}
       {...props}
     >
       {children}
