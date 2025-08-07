@@ -83,7 +83,7 @@ export const Input = forwardRef<HTMLInputElement, Props>(({
         )}
         <input 
           ref={inputRef}
-          className="cursor-pointer outline-none text-gray-400 placeholder:text-gray-400"
+          className="w-full cursor-pointer outline-none text-gray-400 placeholder:text-gray-400"
           {...props} 
         />
       </div>

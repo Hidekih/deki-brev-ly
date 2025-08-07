@@ -1,9 +1,10 @@
 interface Props extends React.ComponentProps<"button"> {
   children: string;
+  icon?: React.ReactNode;
   variant?: "primary" | "secondary";
 }
 
-export function Button({ children, className = "", variant = "primary", ...props }: Props) {
+export function Button({ children, icon, className = "", variant = "primary", ...props }: Props) {
   const getButtonStyleByVariant = (size: Props["variant"]) => {
     switch (size) {
       case "primary":
@@ -27,7 +28,11 @@ export function Button({ children, className = "", variant = "primary", ...props
   }
 
   return (
-    <button className={`flex items-center justify-center gap-1.5 cursor-pointer px-4 transition-colors py-2 disabled:opacity-50 ${getButtonStyleByVariant(variant)} ${className}`} {...props}>
+    <button 
+      className={`flex items-center justify-center gap-1.5 cursor-pointer px-4 transition-colors py-2 disabled:opacity-50 ${getButtonStyleByVariant(variant)} ${className}`}
+      {...props}
+    >
+      {icon && <span>{icon}</span>}
       <span className={getSpanStyleByVariant(variant)}>{children}</span>
     </button>
   );
