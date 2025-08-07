@@ -1,5 +1,5 @@
 interface Props extends React.ComponentProps<"button"> {
-  children: string;
+  children?: string;
   icon?: React.ReactNode;
   variant?: "primary" | "secondary";
 }
