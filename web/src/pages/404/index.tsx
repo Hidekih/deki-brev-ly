@@ -5,7 +5,7 @@ import { FRONTEND_URL } from "../../config/env";
 
 export function NotFound() {
   return (
-    <Card>
+    <Card size="lg" p="lg">
       <Result
         image={<img src="/404.svg" alt="Not Found" className="h-16" />}
         title="Link não encontrado"

@@ -9,11 +9,11 @@ export function ShortUrl() {
   
   return (
     <div className="flex flex-col items-center justify-center h-full w-full">
-      <Card>
+      <Card size="lg" p="lg">
         <Result
           image={<img src="/brevly.svg" alt="Logo Brev.ly" className="h-16" />}
           title="Redirecionando..."
-          >
+        >
           O link será aberto automaticamente em alguns instantes. <br />
           Não foi redirecionado? <Link to={FRONTEND_URL}>Acesse aqui</Link>
         </Result>
