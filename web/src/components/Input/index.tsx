@@ -66,7 +66,7 @@ export const Input = forwardRef<HTMLInputElement, Props>(({
       <label 
         ref={labelRef}
         className={
-          `${error ? "text-danger font-bold" : "text-gray-500"} text-[0.625rem] leading-3.5`
+          `${error ? "text-danger font-bold" : "text-gray-500"} transition-colors text-[0.625rem] leading-3.5`
         }
       >
         {label}
@@ -75,21 +75,21 @@ export const Input = forwardRef<HTMLInputElement, Props>(({
       <div 
         ref={containerRef} 
         className={
-          `flex items-center justify-start px-4 h-12 p-2 rounded-md  border ${error ? "border-danger" : "border-gray-300"}`
+          `flex items-center justify-start px-4 h-12 p-2 rounded-md transition-colors border ${error ? "border-danger" : "border-gray-300"}`
         }
       >
         {prefix && (
           <Text size="md" className="text-gray-400 pointer-none:">{prefix}</Text>
         )}
         <input 
-          ref={inputRef}
-          className="w-full cursor-pointer outline-none text-gray-400 placeholder:text-gray-400"
+          ref={ref ?? inputRef}
+          className="w-full cursor-pointer outline-none text-gray-400 transition-colors placeholder:text-gray-400"
           {...props} 
         />
       </div>
 
       {error && (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 transition-colors">
           <WarningIcon className="text-danger" size={14} />
           <p className="text-xs leading-4 text-gray-500">{error}</p>
         </div>
