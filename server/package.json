@@ -1,0 +1,33 @@
+{
+  "name": "server-brevy-ly",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch --env-file .env src/infra/http/server.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio"
+  },
+  "author": "Alexandre Hideki Siroma",
+  "license": "ISC",
+  "description": "",
+  "keywords": [],
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/node": "^22.10.2",
+    "dotenv-cli": "^10.0.0",
+    "drizzle-kit": "^0.31.4",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "@fastify/cors": "^10.0.1",
+    "drizzle-orm": "^0.44.4",
+    "fastify": "^5.2.0",
+    "fastify-type-provider-zod": "^4.0.2",
+    "postgres": "^3.4.7",
+    "uuid": "^11.1.0",
+    "zod": "^3.24.1"
+  }
+}

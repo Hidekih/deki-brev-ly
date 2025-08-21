@@ -1,6 +1,6 @@
 export interface ShortUrl {
   id: string;
-  key: string; // Assuming 'key' is a unique identifier for the short URL
+  name: string;
   originalUrl: string;
   accessCount: number;
   createdAt: string;
