@@ -3,12 +3,14 @@ import {
   createShortUrlRoute,
   deleteShortUrlRoute,
   readListShortUrlRoute,
+  readOneShortUrlRoute,
   reportShortUrlRoute,
   updateShortUrlRoute,
 } from '@/infra/http/routes';
 import { fastifyCors } from '@fastify/cors';
 import { fastify } from 'fastify';
 import {
+  type ZodFastifySchemaValidationError,
   hasZodFastifySchemaValidationErrors,
   serializerCompiler,
   validatorCompiler,
@@ -21,15 +23,10 @@ server.setSerializerCompiler(serializerCompiler);
 
 server.setErrorHandler((error, request, reply) => {
   if (hasZodFastifySchemaValidationErrors(error)) {
+    const validation = error.validation as ZodFastifySchemaValidationError[];
     return reply.status(400).send({
-      message: 'Validation error',
+      message: `Validation error: ${validation.map(error => error.message).join(', ')}`,
     });
-
-    // const validation = error.validation as ZodFastifySchemaValidationError[];
-    // return validation.map(
-    //   (error, ind) =>
-    //     `Parameter '${error.params.issue.path.join('.')}': Message: ${error.params.issue.message} `
-    // );
   }
 
   console.error(error);
@@ -41,9 +38,10 @@ server.register(fastifyCors, { origin: '*' });
 
 // * Register routes
 server.register(createShortUrlRoute);
+server.register(deleteShortUrlRoute);
+server.register(readOneShortUrlRoute);
 server.register(readListShortUrlRoute);
 server.register(updateShortUrlRoute);
-server.register(deleteShortUrlRoute);
 server.register(reportShortUrlRoute);
 
 server.listen({ port: env.PORT, host: '0.0.0.0' }).then(() => {
