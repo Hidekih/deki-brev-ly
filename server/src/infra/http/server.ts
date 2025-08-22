@@ -5,7 +5,6 @@ import {
   readListShortUrlRoute,
   readOneShortUrlRoute,
   reportShortUrlRoute,
-  updateShortUrlRoute,
 } from '@/infra/http/routes';
 import { fastifyCors } from '@fastify/cors';
 import { fastify } from 'fastify';
@@ -41,7 +40,6 @@ server.register(createShortUrlRoute);
 server.register(deleteShortUrlRoute);
 server.register(readOneShortUrlRoute);
 server.register(readListShortUrlRoute);
-server.register(updateShortUrlRoute);
 server.register(reportShortUrlRoute);
 
 server.listen({ port: env.PORT, host: '0.0.0.0' }).then(() => {
