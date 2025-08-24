@@ -21,6 +21,7 @@ type GetShortUrlsOutput = {
   url: string;
 };
 
+// * Este endpoint cria um arquivo em CSV e o envia para o Cloudflare R2 com estratégia de stream para otimização de memória
 export async function exportShortUrls(
   input: GetShortUrlsInput
 ): Promise<GetShortUrlsOutput> {
@@ -59,7 +60,7 @@ export async function exportShortUrls(
 
   const { sql: rawSql, params } = query.toSQL();
 
-  const cursor = pg.unsafe(rawSql, params as (string | number)[]).cursor(2);
+  const cursor = pg.unsafe(rawSql, params as (string | number)[]).cursor(50);
 
   const csv = stringify({
     delimiter: ',',
@@ -77,12 +78,13 @@ export async function exportShortUrls(
   const convertToCSVPipeline = pipeline(
     cursor,
     new Transform({
+      // * Transforma o binário em objeto
       objectMode: true,
       transform(chunks: unknown[], encoding, callback) {
+        // * Garante que cada chunk seja tratado de forma individual para gerar uma linha do CSV
         for (const chunk of chunks) {
           this.push(chunk);
         }
-
         callback();
       },
     }),
@@ -97,6 +99,7 @@ export async function exportShortUrls(
     contentStream: uploadToStorageStream,
   });
 
+  // * Cria o arquivo CSV apartir do cursor ao mesmo tempo que envia o stream para o Cloudflare R2
   const [{ url }] = await Promise.all([uploadToStorage, convertToCSVPipeline]);
 
   return {

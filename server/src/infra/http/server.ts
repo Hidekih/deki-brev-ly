@@ -35,12 +35,26 @@ server.setErrorHandler((error, request, reply) => {
 
 server.register(fastifyCors, { origin: '*' });
 
-// * Register routes
 server.register(createShortUrlRoute);
 server.register(deleteShortUrlRoute);
 server.register(readOneShortUrlRoute);
 server.register(readListShortUrlRoute);
 server.register(exportShortUrlRoute);
+
+// server.register(
+//   (app, _, done) => {
+//     app.register(createShortUrlRoute);
+//     app.register(deleteShortUrlRoute);
+//     app.register(readOneShortUrlRoute);
+//     app.register(readListShortUrlRoute);
+//     app.register(exportShortUrlRoute);
+//     done();
+//   },
+//   {
+//     // Global prefix
+//     prefix: '/v1',
+//   }
+// );
 
 server.listen({ port: env.PORT, host: '0.0.0.0' }).then(() => {
   console.log('HTTP Server running!');
