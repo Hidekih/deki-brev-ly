@@ -1,9 +1,7 @@
-import { asc, gt } from 'drizzle-orm';
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { z } from 'zod';
 
-import { db } from '@/infra/db';
-import { schema } from '@/infra/db/schemas';
+import { getShortUrls } from '@/app/functions/get-short-urls';
 
 export const readListShortUrlRoute: FastifyPluginAsyncZod = async server => {
   server.get(
@@ -36,22 +34,11 @@ export const readListShortUrlRoute: FastifyPluginAsyncZod = async server => {
     async (request, reply) => {
       const { pageSize, cursor } = request.query;
 
-      const shortUrls = await db
-        .select()
-        .from(schema.shortUrls)
-        .orderBy(asc(schema.shortUrls.id))
-        .where(cursor != null ? gt(schema.shortUrls.id, cursor) : undefined)
-        .limit(pageSize);
+      const { total, list } = await getShortUrls({ cursor, pageSize });
 
       return reply.status(200).send({
-        total: shortUrls.length,
-        list: shortUrls.map(shortUrl => ({
-          id: shortUrl.id,
-          originalUrl: shortUrl.originalUrl,
-          name: shortUrl.name,
-          accessCount: shortUrl.accessCount,
-          createdAt: shortUrl.createdAt,
-        })),
+        total,
+        list,
       });
     }
   );
