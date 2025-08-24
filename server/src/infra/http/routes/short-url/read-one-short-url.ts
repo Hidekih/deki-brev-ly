@@ -6,18 +6,18 @@ import { readOneShortUrl } from '@/app/functions/short-urls/read-one';
 
 export const readOneShortUrlRoute: FastifyPluginAsyncZod = async server => {
   server.get(
-    '/short-urls/:shortUrlId',
+    '/short-urls/:name',
     {
       schema: {
         params: z.object({
-          shortUrlId: z.string().uuid(),
+          name: z.string(),
         }),
       },
     },
     async (request, reply) => {
-      const { shortUrlId } = request.params;
+      const { name } = request.params;
 
-      const shortUrl = await readOneShortUrl({ shortUrlId });
+      const shortUrl = await readOneShortUrl({ name });
 
       if (shortUrl == null) {
         return reply.status(404).send({ message: 'Short URL not found.' });
@@ -25,7 +25,7 @@ export const readOneShortUrlRoute: FastifyPluginAsyncZod = async server => {
 
       await increaseAccessCountShortUrl({
         currentAccessCount: shortUrl.accessCount,
-        shortUrlId,
+        shortUrlId: shortUrl.id,
       });
 
       return reply.status(302).redirect(shortUrl.originalUrl);
