@@ -1,7 +1,7 @@
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { z } from 'zod';
 
-import { getShortUrls } from '@/app/functions/get-short-urls';
+import { readListShortUrls } from '@/app/functions/short-urls/read-list';
 
 export const readListShortUrlRoute: FastifyPluginAsyncZod = async server => {
   server.get(
@@ -34,7 +34,7 @@ export const readListShortUrlRoute: FastifyPluginAsyncZod = async server => {
     async (request, reply) => {
       const { pageSize, cursor } = request.query;
 
-      const { total, list } = await getShortUrls({ cursor, pageSize });
+      const { total, list } = await readListShortUrls({ cursor, pageSize });
 
       return reply.status(200).send({
         total,

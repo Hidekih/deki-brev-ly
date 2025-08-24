@@ -3,12 +3,12 @@ import { schema } from '@/infra/db/schemas';
 import { asc, count, gt } from 'drizzle-orm';
 import { z } from 'zod';
 
-const getShortUrlsInput = z.object({
+const readListShortUrlsInput = z.object({
   cursor: z.string().optional(),
   pageSize: z.number().optional().default(20),
 });
 
-type GetShortUrlsInput = z.input<typeof getShortUrlsInput>;
+type ReadListShortUrlsInput = z.input<typeof readListShortUrlsInput>;
 
 type GetShortUrlsOutput = {
   total: number;
@@ -21,10 +21,10 @@ type GetShortUrlsOutput = {
   }>;
 };
 
-export async function getShortUrls(
-  input: GetShortUrlsInput
+export async function readListShortUrls(
+  input: ReadListShortUrlsInput
 ): Promise<GetShortUrlsOutput> {
-  const { cursor, pageSize } = getShortUrlsInput.parse(input);
+  const { cursor, pageSize } = readListShortUrlsInput.parse(input);
 
   const queryList = db
     .select()
