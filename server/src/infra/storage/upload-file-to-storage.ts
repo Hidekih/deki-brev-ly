@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { r2 } from './client';
 
 const uploadFileToStorageInput = z.object({
-  folder: z.enum(['report']),
+  folder: z.enum(['reports']),
   fileName: z.string(),
   contentType: z.string(),
   contentStream: z.instanceof(Readable),
@@ -35,6 +35,6 @@ export async function uploadFileToStorage(input: UploadFileToStorageInput) {
 
   return {
     key: fileKey,
-    url: new URL(uniqueFileName, env.CLOUDFLARE_PUBLIC_URL).toString(),
+    url: new URL(fileKey, env.CLOUDFLARE_PUBLIC_URL).toString(),
   };
 }

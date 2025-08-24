@@ -2,9 +2,9 @@ import { env } from '@/env';
 import {
   createShortUrlRoute,
   deleteShortUrlRoute,
+  exportShortUrlRoute,
   readListShortUrlRoute,
   readOneShortUrlRoute,
-  reportShortUrlRoute,
 } from '@/infra/http/routes';
 import { fastifyCors } from '@fastify/cors';
 import { fastify } from 'fastify';
@@ -40,7 +40,7 @@ server.register(createShortUrlRoute);
 server.register(deleteShortUrlRoute);
 server.register(readOneShortUrlRoute);
 server.register(readListShortUrlRoute);
-server.register(reportShortUrlRoute);
+server.register(exportShortUrlRoute);
 
 server.listen({ port: env.PORT, host: '0.0.0.0' }).then(() => {
   console.log('HTTP Server running!');
