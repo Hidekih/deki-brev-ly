@@ -20,3 +20,5 @@ export const shortUrls = pgTable(
   },
   table => [uniqueIndex('short_urls_name_idx').on(table.name)]
 );
+
+export type ShortUrl = typeof shortUrls.$inferSelect;

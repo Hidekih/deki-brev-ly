@@ -1,9 +1,8 @@
-import { eq } from 'drizzle-orm';
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { z } from 'zod';
 
-import { db } from '@/infra/db';
-import { schema } from '@/infra/db/schemas';
+import { deleteShortUrl } from '@/app/functions/short-urls/delete';
+import { readOneShortUrl } from '@/app/functions/short-urls/read-one';
 
 export const deleteShortUrlRoute: FastifyPluginAsyncZod = async server => {
   server.delete(
@@ -22,17 +21,13 @@ export const deleteShortUrlRoute: FastifyPluginAsyncZod = async server => {
     async (request, reply) => {
       const { shortUrlId } = request.params;
 
-      const shortUrl = await db.query.shortUrls.findFirst({
-        where: eq(schema.shortUrls.id, shortUrlId),
-      });
+      const shortUrl = await readOneShortUrl({ shortUrlId });
 
       if (shortUrl == null) {
         return reply.status(400).send({ message: 'Short URL does not exist.' });
       }
 
-      await db
-        .delete(schema.shortUrls)
-        .where(eq(schema.shortUrls.id, shortUrl.id));
+      await deleteShortUrl({ shortUrlId });
 
       return reply.status(204).send();
     }
