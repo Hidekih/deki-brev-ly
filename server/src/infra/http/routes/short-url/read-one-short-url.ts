@@ -1,10 +1,8 @@
-import { eq } from 'drizzle-orm';
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { z } from 'zod';
 
+import { increaseAccessCountShortUrl } from '@/app/functions/short-urls/increase-access-count';
 import { readOneShortUrl } from '@/app/functions/short-urls/read-one';
-import { db } from '@/infra/db';
-import { schema } from '@/infra/db/schemas';
 
 export const readOneShortUrlRoute: FastifyPluginAsyncZod = async server => {
   server.get(
@@ -25,10 +23,10 @@ export const readOneShortUrlRoute: FastifyPluginAsyncZod = async server => {
         return reply.status(404).send({ message: 'Short URL not found.' });
       }
 
-      await db
-        .update(schema.shortUrls)
-        .set({ accessCount: shortUrl.accessCount + 1 })
-        .where(eq(schema.shortUrls.id, shortUrlId));
+      await increaseAccessCountShortUrl({
+        currentAccessCount: shortUrl.accessCount,
+        shortUrlId,
+      });
 
       return reply.status(302).redirect(shortUrl.originalUrl);
     }
