@@ -1,9 +1,9 @@
-import { db } from '@/infra/db';
-import { schema } from '@/infra/db/schemas';
-import { shortUrls } from '@/infra/db/schemas/short-urls';
 import { eq } from 'drizzle-orm';
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { z } from 'zod';
+
+import { db } from '@/infra/db';
+import { schema } from '@/infra/db/schemas';
 
 export const createShortUrlRoute: FastifyPluginAsyncZod = async server => {
   server.post(
@@ -31,9 +31,9 @@ export const createShortUrlRoute: FastifyPluginAsyncZod = async server => {
       const sanitizedName = name.trim().replace(/[\s/]+/g, '-');
 
       const existingShortUrl = await db
-        .select({ id: shortUrls.id })
-        .from(shortUrls)
-        .where(eq(shortUrls.name, sanitizedName));
+        .select({ id: schema.shortUrls.id })
+        .from(schema.shortUrls)
+        .where(eq(schema.shortUrls.name, sanitizedName));
 
       if (existingShortUrl[0] != null) {
         return reply

@@ -12,7 +12,7 @@ export const readListShortUrlRoute: FastifyPluginAsyncZod = async server => {
       schema: {
         querystring: z.object({
           pageSize: z.coerce.number().min(1).max(100).default(10),
-          reference: z.string().optional(),
+          cursor: z.string().optional(),
         }),
         response: {
           200: z.object({
@@ -34,15 +34,13 @@ export const readListShortUrlRoute: FastifyPluginAsyncZod = async server => {
       },
     },
     async (request, reply) => {
-      const { pageSize, reference } = request.query;
+      const { pageSize, cursor } = request.query;
 
       const shortUrls = await db
         .select()
         .from(schema.shortUrls)
         .orderBy(asc(schema.shortUrls.id))
-        .where(
-          reference != null ? gt(schema.shortUrls.id, reference) : undefined
-        )
+        .where(cursor != null ? gt(schema.shortUrls.id, cursor) : undefined)
         .limit(pageSize);
 
       return reply.status(200).send({
