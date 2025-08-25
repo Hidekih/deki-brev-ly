@@ -12,6 +12,7 @@ type ReadListShortUrlsInput = z.input<typeof readListShortUrlsInput>;
 
 type GetShortUrlsOutput = {
   total: number;
+  nextCursor?: string;
   list: Array<{
     id: string;
     originalUrl: string;
@@ -42,8 +43,12 @@ export async function readListShortUrls(
 
   const [list, [{ total }]] = await Promise.all([queryList, queryCount]);
 
+  const nextCursor =
+    list.length === pageSize ? list[list.length - 1].id : undefined;
+
   return {
     total,
+    nextCursor,
     list: list.map(item => ({
       id: item.id,
       originalUrl: item.originalUrl,

@@ -15,6 +15,7 @@ export const readListShortUrlRoute: FastifyPluginAsyncZod = async server => {
         response: {
           200: z.object({
             total: z.number().int().nonnegative(),
+            nextCursor: z.string().optional(),
             list: z
               .array(
                 z.object({
@@ -34,11 +35,15 @@ export const readListShortUrlRoute: FastifyPluginAsyncZod = async server => {
     async (request, reply) => {
       const { pageSize, cursor } = request.query;
 
-      const { total, list } = await readListShortUrls({ cursor, pageSize });
+      const { total, list, nextCursor } = await readListShortUrls({
+        cursor,
+        pageSize,
+      });
 
       return reply.status(200).send({
         total,
         list,
+        nextCursor,
       });
     }
   );
