@@ -21,11 +21,11 @@ export function Card({ children, className, size = "md", p = "md", ...props }: P
       case "fill":
         return "max-w-full";
       case "md":
-        return "max-w-[23.75rem]";
+        return "max-w-full lg:max-w-[23.75rem]";
       case "lg":
-        return "max-w-[36.25rem]";
+        return "max-w-full lg:max-w-[36.25rem]";
       default:
-        return "max-w-[23.75rem]";
+        return "max-w-full lg:max-w-[23.75rem]";
     }
   };
 

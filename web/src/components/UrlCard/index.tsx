@@ -1,27 +1,24 @@
 import { CopyIcon, TrashIcon } from "@phosphor-icons/react";
-import { useState } from "react";
 
 import type { ShortUrl } from "../../interfaces/shortUrl";
+import { IconButton } from "../IconButton";
 import { Link } from "../Link";
 import { Text } from "../Text";
-import { IconButton } from "../IconButton";
 
 interface Props {
   shortUrl: ShortUrl;
   baseUrl: string;
 }
 
-export const UrlCard = ({ shortUrl: defaultValues, baseUrl }: Props) => {
-  const [shortUrl, setShortUrl] = useState<ShortUrl>(defaultValues);
-
+export const UrlCard = ({ baseUrl, shortUrl }: Props) => {
   return (
-    <div className="w-full flex flex-row py-4 border-t border-gray-200">
-      <div className="w-full flex flex-col gap-1">
-        <Link to={baseUrl + shortUrl.key}>
-          {baseUrl}{shortUrl.key}
+    <div className="w-full flex flex-row py-4 border-t border-gray-200 overflow-hidden">
+      <div className="w-full flex flex-col gap-1 overflow-hidden">
+        <Link className="line-clamp-1 whitespace-normal" to={baseUrl + shortUrl.name}>
+          {baseUrl + shortUrl.name}
         </Link>
 
-        <Text size="sm">{shortUrl.originalUrl}</Text>
+        <Text className="line-clamp-1" size="sm">{shortUrl.originalUrl}</Text>
       </div>
 
       <div className="flex flex-row items-center gap-5">

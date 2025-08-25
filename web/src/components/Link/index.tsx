@@ -4,10 +4,10 @@ interface Props extends RRLinkProps {
   type?: "primary" | "secondary";
 }
 
-export function Link({ ...props }: Props) {
+export function Link({ className, ...props }: Props) {
   return (
     <RRLink
-      className="text-blue-base"
+      className={`text-blue-base ${className ?? ''}`}
       {...props}
     />
   );
