@@ -19,13 +19,13 @@ export function Card({ children, className, size = "md", p = "md", ...props }: P
   const getStylesBySize = (size: Props["size"]) => {
     switch (size) {
       case "fill":
-        return "max-w-full";
+        return "";
       case "md":
-        return "max-w-full lg:max-w-[23.75rem]";
+        return "max-w-full lg:max-w-[23.75rem] lg:min-w-[23.75rem]";
       case "lg":
-        return "max-w-full lg:max-w-[36.25rem]";
+        return "max-w-full w-full lg:max-w-[36.25rem] lg:min-w-[36.25rem]";
       default:
-        return "max-w-full lg:max-w-[23.75rem]";
+        return "max-w-full w-full lg:max-w-[23.75rem] lg:min-w-[23.75rem]";
     }
   };
 
