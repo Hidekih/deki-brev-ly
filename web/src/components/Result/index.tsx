@@ -1,17 +1,19 @@
-import { Text } from "../Text";
-import { Title } from "../Title";
+import { Text } from '../Text';
+import { Title } from '../Title';
 
-interface Props extends React.ComponentPropsWithoutRef<"div"> {
+interface Props extends React.ComponentPropsWithoutRef<'div'> {
   image: React.ReactNode;
-  title: string;
+  title?: string;
 }
 
-export function Result({ image, title, children, className = "", ...props }: Props) {
+export function Result({ image, title, children, className = '', ...props }: Props) {
   return (
     <div className={`flex flex-col gap-6 items-center ${className}`} {...props}>
       {image}
-      
-      <Title>{title}</Title>
+
+      {title && (
+        <Title>{title}</Title>
+      )}
 
       <Text className="text-balance text-center">{children}</Text>
     </div>
