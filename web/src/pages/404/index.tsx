@@ -13,5 +13,5 @@ export function NotFound() {
         O link que você está tentando acessar não existe, foi removido ou é uma URL inválida. Saiba mais em <Link to={FRONTEND_URL}>{FRONTEND_URL}</Link>.
       </Result>
     </Card>
-  )
+  );
 }

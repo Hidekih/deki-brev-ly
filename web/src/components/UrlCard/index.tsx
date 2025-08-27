@@ -1,5 +1,8 @@
 import { CopyIcon, TrashIcon } from "@phosphor-icons/react";
+import { useCallback } from "react";
 
+import { useShortUrlList } from "../../hooks/useShortUrlList";
+import { deleteShortUrl } from "../../http/deleteShortUrl";
 import type { ShortUrl } from "../../interfaces/shortUrl";
 import { IconButton } from "../IconButton";
 import { Link } from "../Link";
@@ -11,6 +14,17 @@ interface Props {
 }
 
 export const UrlCard = ({ baseUrl, shortUrl }: Props) => {
+  const { refetch } = useShortUrlList();
+
+  const handleDeleteShortUrl = useCallback(async () => {
+    try {
+      await deleteShortUrl({ shortUrlId: shortUrl.id });
+      await refetch();
+    } catch (err) {
+      console.error(err);
+    }
+  }, [refetch, shortUrl.id]);
+
   return (
     <div className="w-full flex flex-row py-4 border-t border-gray-200 overflow-hidden">
       <div className="w-full flex flex-col gap-1 overflow-hidden">
@@ -31,7 +45,7 @@ export const UrlCard = ({ baseUrl, shortUrl }: Props) => {
             <CopyIcon />
           </IconButton>
 
-          <IconButton variant="secondary">
+          <IconButton variant="secondary" onClick={handleDeleteShortUrl}>
             <TrashIcon />
           </IconButton>
         </div>
