@@ -21,6 +21,8 @@ export function AppRoutes() {
         <Route path="/:short-url" element={<ShortUrl />} />
 
         <Route path="*" element={<NotFound />} />
+
+        <Route path="/404" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
