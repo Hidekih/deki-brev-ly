@@ -9,6 +9,7 @@ import { URL_WITH_SLASH } from '../../config/env'
 import { useCreateShortUrlForm } from '../../hooks/useCreateShortUrlForm'
 import { useShortUrlList } from '../../hooks/useShortUrlList'
 import { createShortUrl } from '../../http/createShortUrl'
+import { exportShortUrl } from '../../http/exportShortUrl'
 
 export function Home() {
   const { shortUrls, refetch } = useShortUrlList();
@@ -27,6 +28,29 @@ export function Home() {
       }
     }
   });
+
+  const handleDownloadShortUrlReport = async () => {
+    try {
+      const { url } = await exportShortUrl();
+      try {
+        const a = document.createElement("a");
+        a.href = url;
+        // a.download = fileName ?? "name_file";
+
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        window.URL.revokeObjectURL(url);
+      } catch (error) {
+        console.error("Erro ao baixar arquivo:", error);
+      }
+
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className='w-full lg:w-[980px] flex flex-col gap-6 items-start'>
@@ -64,6 +88,8 @@ export function Home() {
             <Button
               icon={<DownloadSimpleIcon size={16} />}
               variant='secondary'
+              disabled={shortUrls.length === 0}
+              onClick={handleDownloadShortUrlReport}
             >
               Baixar CSV
             </Button>
