@@ -16,6 +16,14 @@ interface Props {
 export const UrlCard = ({ baseUrl, shortUrl }: Props) => {
   const { refetch } = useShortUrlList();
 
+  const copyShortUrlToClipboard = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(baseUrl + shortUrl.name);
+    } catch (err) {
+      console.error(err);
+    }
+  }, [baseUrl, shortUrl.name]);
+
   const handleDeleteShortUrl = useCallback(async () => {
     try {
       await deleteShortUrl({ shortUrlId: shortUrl.id });
@@ -41,11 +49,11 @@ export const UrlCard = ({ baseUrl, shortUrl }: Props) => {
         </Text>
 
         <div className="flex flex-row items-center gap-1">
-          <IconButton variant="secondary">
+          <IconButton aria-label="Copiar link encurtado" variant="secondary" onClick={copyShortUrlToClipboard}>
             <CopyIcon />
           </IconButton>
 
-          <IconButton variant="secondary" onClick={handleDeleteShortUrl}>
+          <IconButton aria-label="Deletar link encurtado" variant="secondary" onClick={handleDeleteShortUrl}>
             <TrashIcon />
           </IconButton>
         </div>
