@@ -1,6 +1,6 @@
 import { Readable } from 'node:stream';
 import { createUniqueFileName } from '@/app/helpers/createUniqueFileName';
-import { env } from '@/env';
+import { env } from '@/config/env';
 import { Upload } from '@aws-sdk/lib-storage';
 import { z } from 'zod';
 import { r2 } from './client';

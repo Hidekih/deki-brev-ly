@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 import { PassThrough, Transform } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
-import { env } from '@/env';
+import { env } from '@/config/env';
 import { db, pg } from '@/infra/db';
 import { schema } from '@/infra/db/schemas';
 import { uploadFileToStorage } from '@/infra/storage/upload-file-to-storage';

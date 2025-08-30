@@ -15,6 +15,10 @@ export const readOneShortUrlRoute: FastifyPluginAsyncZod = async server => {
       },
     },
     async (request, reply) => {
+      if (request.headers.purpose === 'prefetch') {
+        return reply.status(200).send();
+      }
+
       const { name } = request.params;
 
       const shortUrl = await readOneShortUrl({ name });
