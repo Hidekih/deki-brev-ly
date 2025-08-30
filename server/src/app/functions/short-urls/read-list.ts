@@ -1,6 +1,6 @@
 import { db } from '@/infra/db';
 import { schema } from '@/infra/db/schemas';
-import { asc, count, gt } from 'drizzle-orm';
+import { asc, count, gt, gte } from 'drizzle-orm';
 import { z } from 'zod';
 
 const readListShortUrlsInput = z.object({
@@ -38,17 +38,21 @@ export async function readListShortUrls(
     .from(schema.shortUrls);
 
   if (cursor) {
-    queryList.where(gt(schema.shortUrls.id, cursor));
+    queryList.where(gte(schema.shortUrls.id, cursor));
   }
 
   const [list, [{ total }]] = await Promise.all([queryList, queryCount]);
 
-  const nextCursor =
-    list.length === pageSize ? list[list.length - 1].id : undefined;
+  const [nextShortUrl] = await db
+    .select({ id: schema.shortUrls.id })
+    .from(schema.shortUrls)
+    .orderBy(asc(schema.shortUrls.id))
+    .where(gt(schema.shortUrls.id, list[list.length - 1].id))
+    .limit(1);
 
   return {
     total,
-    nextCursor,
+    nextCursor: nextShortUrl?.id,
     list: list.map(item => ({
       id: item.id,
       originalUrl: item.originalUrl,
