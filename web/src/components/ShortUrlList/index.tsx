@@ -1,5 +1,7 @@
 import { URL_WITH_SLASH } from "../../config/env";
+import { useShortUrlList } from "../../hooks/useShortUrlList";
 import type { ShortUrl } from "../../interfaces/shortUrl";
+import { Button } from "../Button";
 import { Result } from "../Result";
 import { UrlCard } from "../UrlCard";
 
@@ -8,6 +10,8 @@ interface Props {
 };
 
 export const ShortUrlList = ({ list }: Props) => {
+  const { isFetchingNextPage, hasNextPage, fetchNextPage } = useShortUrlList();
+
   if (list == null || list.length === 0) {
     return (
       <div className="w-full mt-4 pt-8 pb-4 border-t border-gray-200">
@@ -27,6 +31,19 @@ export const ShortUrlList = ({ list }: Props) => {
           </li>
         ))}
       </ul>
+
+      <Button
+        className="w-full"
+        variant="secondary"
+        onClick={() => fetchNextPage()}
+        disabled={!hasNextPage || isFetchingNextPage}
+      >
+        {isFetchingNextPage
+          ? 'Carregando...'
+          : hasNextPage
+            ? 'Carregar mais'
+            : 'Todos os links foram carregados'}
+      </Button>
     </div>
   )
 };

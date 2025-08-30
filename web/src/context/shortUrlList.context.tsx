@@ -1,5 +1,5 @@
-import { useInfiniteQuery } from '@tanstack/react-query'
 /* eslint-disable react-refresh/only-export-components */
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { createContext } from "react";
 
 import { readListShortUrls } from '../http/readListShortUrls';
@@ -7,7 +7,8 @@ import type { ShortUrl } from "../interfaces/shortUrl";
 
 interface ShortUrlListContextProps {
   shortUrls: Array<ShortUrl>;
-  isLoading?: boolean;
+  isFetchingNextPage: boolean;
+  hasNextPage: boolean;
   fetchNextPage: () => Promise<unknown>;
   refetch: () => Promise<unknown>;
 }
@@ -19,7 +20,7 @@ interface Props {
 }
 
 export const ShortUrlListProvider = ({ children }: Props) => {
-  const { data, fetchNextPage, refetch } = useInfiniteQuery({
+  const { data, fetchNextPage, isFetchingNextPage, hasNextPage, refetch } = useInfiniteQuery({
     queryKey: ['shortUrls'],
     queryFn: readListShortUrls,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -29,7 +30,7 @@ export const ShortUrlListProvider = ({ children }: Props) => {
   const shortUrls = data?.pages.flatMap(page => page.list) ?? [];
 
   return (
-    <ShortUrlListContext.Provider value={{ shortUrls, fetchNextPage, refetch }}>
+    <ShortUrlListContext.Provider value={{ shortUrls, fetchNextPage, isFetchingNextPage, hasNextPage, refetch }}>
       {children}
     </ShortUrlListContext.Provider>
   );
